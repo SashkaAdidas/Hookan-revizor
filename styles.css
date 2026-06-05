@@ -7,7 +7,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.7) 0%, rgba(22, 33, 62, 0.7) 100%), 
-                url('images/photos/hookah-stil.avif');
+                url('images/photos/hookan-fon.jfif');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
@@ -266,24 +266,200 @@ body {
 
 /* Адаптивность */
 @media (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+    
+    .header {
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+    
     .main-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        text-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
     }
     
     .subtitle {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        opacity: 0.9;
     }
     
     .grid-container {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 20px;
+        padding: 0 5px;
     }
     
     .hookah-card {
-        height: 320px;
+        height: 300px;
+        border-radius: 15px;
     }
     
     .card-title {
         font-size: 1.3rem;
+        margin-bottom: 6px;
+    }
+    
+    .card-location {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+    
+    .rating-badge {
+        padding: 8px 18px;
+        font-size: 1rem;
+    }
+    
+    .rating-badge .stars {
+        font-size: 0.9rem;
+    }
+    
+    .info-tag {
+        padding: 6px 14px;
+        font-size: 0.75rem;
+    }
+    
+    .stat-item {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+    
+    .price-range {
+        padding: 5px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .card-content {
+        padding: 20px;
+    }
+    
+    .card-stats {
+        bottom: 80px;
+        left: 15px;
+        gap: 10px;
+    }
+    
+    /* Убираем hover эффекты на мобильных */
+    .hookah-card:hover {
+        transform: none;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .hookah-card:hover .card-bg {
+        transform: none;
+        opacity: 0.4;
+    }
+    
+    .hookah-card:hover .card-stats {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .footer {
+        font-size: 0.8rem;
+        padding: 20px;
+        margin-top: 40px;
     }
 }
+
+/* Маленькие телефоны */
+@media (max-width: 375px) {
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .hookah-card {
+        height: 280px;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+    }
+    
+    .rating-badge {
+        padding: 7px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Планшеты */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .hookah-card {
+        height: 350px;
+    }
+}
+
+/* Убираем hover эффекты на тач-устройствах */
+@media (hover: none) and (pointer: coarse) {
+    .hookah-card:hover {
+        transform: none;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .hookah-card:hover .card-bg {
+        transform: none;
+        opacity: 0.4;
+    }
+    
+    .hookah-card:active {
+        transform: scale(1.02);
+    }
+}
+
+/* Улучшаем производительность на мобильных */
+@media (max-width: 768px) {
+    .card-bg {
+        transition: transform 0.4s ease-out;
+    }
+    
+    .card-overlay {
+        transition: opacity 0.4s ease;
+    }
+    
+    .hookah-card {
+        transition: transform 0.3s ease-out;
+    }
+    
+    /* Эффект hover для центральной карточки при скролле */
+    .hookah-card .card-bg.hover-active {
+        transform: scale(1.5);
+        opacity: 0.7;
+    }
+
+    .hookah-card .card-stats.hover-active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Отключаем на десктопе */
+@media (min-width: 769px) {
+    .hookah-card .card-bg.hover-active {
+        transform: none !important;
+    }
+
+    .hookah-card .card-stats.hover-active {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+    .card-overlay {
+        transition: none;
+    }
+
+    .hookah-card {
+        transition: transform 0.3s ease-out;
+    }
+
+

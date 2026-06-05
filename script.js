@@ -326,6 +326,71 @@ function initGrid() {
         const card = createCard(lounge);
         grid.appendChild(card);
     });
+    
+    // Включаем эффект скролла для мобильных
+    initScrollEffect();
+}
+
+// Эффект hover для карточки в центре экрана при скролле
+function initScrollEffect() {
+    // Проверяем, мобильное устройство
+    const isMobile = window.innerWidth <= 768;
+    
+    if (!isMobile) return;
+    
+    let activeCard = null;
+    
+    function updateActiveCard() {
+        const cards = document.querySelectorAll('.hookah-card');
+        const viewportHeight = window.innerHeight;
+        const viewportCenter = viewportHeight / 2;
+        
+        let closestCard = null;
+        let closestDistance = Infinity;
+        
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const cardCenter = rect.top + rect.height / 2;
+            const distance = Math.abs(viewportCenter - cardCenter);
+            
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestCard = card;
+            }
+        });
+        
+        // Снимаем эффект со всех
+        document.querySelectorAll('.card-bg.hover-active').forEach(bg => {
+            bg.classList.remove('hover-active');
+        });
+        
+        // Добавляем эффект центральной карточке
+        if (closestCard && closestCard !== activeCard && closestDistance < viewportHeight / 2) {
+            activeCard = closestCard;
+            const cardBg = activeCard.querySelector('.card-bg');
+            if (cardBg) {
+                cardBg.classList.add('hover-active');
+            }
+        } else if (closestDistance >= viewportHeight / 2) {
+            activeCard = null;
+        }
+    }
+    
+    // Запускаем при скролле
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateActiveCard();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Проверяем при загрузке и ресайзе
+    updateActiveCard();
+    window.addEventListener('resize', updateActiveCard);
 }
 
 // Параллакс эффект при движении мыши (убран, чтобы не мешать hover)
@@ -623,6 +688,63 @@ style.textContent = `
     .schedule-time {
         color: #feca57;
         font-weight: 600;
+    }
+    
+    /* Мобильная адаптация модалок */
+    @media (max-width: 768px) {
+        .schedule-modal-content,
+        .review-menu-content {
+            width: 90% !important;
+            max-width: 350px;
+            padding: 20px;
+            margin: 10px;
+        }
+        
+        .schedule-modal-content h3,
+        .review-menu-content h3 {
+            font-size: 1.2rem;
+        }
+        
+        .schedule-title {
+            font-size: 1.1rem;
+        }
+        
+        .schedule-row {
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .close-menu,
+        .close-schedule {
+            font-size: 1.5rem;
+            top: 8px;
+            right: 12px;
+        }
+        
+        .stars-select span {
+            font-size: 2rem;
+        }
+        
+        .review-text {
+            font-size: 0.85rem;
+            padding: 10px;
+        }
+        
+        .submit-btn {
+            font-size: 0.95rem;
+            padding: 10px;
+        }
+    }
+    
+    /* Улучшаем нажатие на тач-устройствах */
+    @media (hover: none) and (pointer: coarse) {
+        .info-tag,
+        .rating-badge.review-trigger,
+        .stars-select span,
+        .submit-btn {
+            min-height: 44px;
+            min-width: 44px;
+        }
     }
 `;
 document.head.appendChild(style);
