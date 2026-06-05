@@ -433,7 +433,8 @@ body {
     /* 🐢 Медленное приближение картинки в мобильном режиме */
     .card-bg.hover-active {
         /* Убрали !important — теперь анимация управляется извне */
-        animation: slowZoomIn 4s ease-out forwards;
+        animation: slowZoomIn 1s ease-out forwards;
+        filter: brightness(1);
     }
 }
     @keyframes slowZoomIn {
@@ -442,8 +443,8 @@ body {
             opacity: 0.4;
         }
         100% {
-            transform: scale(1.15); /* медленное приближение */
-            opacity: 0.65;
+            transform: scale(1.1); /* медленное приближение */
+            opacity: 0.9;
         }
     }
 

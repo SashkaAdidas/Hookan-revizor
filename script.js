@@ -550,10 +550,12 @@ function initScrollEffect() {
       }
     }
 
+
     function handleResizeThrottled() {
       if (!resizeTicking) {
         window.requestAnimationFrame(() => {
           initScrollEffect();
+          updateActiveCard(); // ← обновляем эффект при ресайзе
           resizeTicking = false;
         });
         resizeTicking = true;
