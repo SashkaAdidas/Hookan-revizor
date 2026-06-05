@@ -419,7 +419,7 @@ body {
 /* Улучшаем производительность на мобильных */
 @media (max-width: 768px) {
     .card-bg {
-        transition: transform 0.4s ease-out;
+        transition: opacity 0.15s ease-out; /* 👈 только opacity и только 0.15s */
     }
 
     .card-overlay {
