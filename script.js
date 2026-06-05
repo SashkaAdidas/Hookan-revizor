@@ -333,72 +333,85 @@ function initGrid() {
 
 // Эффект hover для карточки в центре экрана при скролле
 function initScrollEffect() {
-    // Проверяем, мобильное устройство
-    const isMobile = window.innerWidth <= 768;
-    
-    if (!isMobile) return;
-    
-    let activeCard = null;
-    
-    function updateActiveCard() {
-        const cards = document.querySelectorAll('.hookah-card');
-        const viewportHeight = window.innerHeight;
-        const viewportCenter = viewportHeight / 2;
+    try {
+        // Проверяем, мобильное устройство
+        const isMobile = window.innerWidth <= 768;
         
-        let closestCard = null;
-        let closestDistance = Infinity;
+        if (!isMobile) {
+            console.log('Не мобильное устройство, эффект отключён');
+            return;
+        }
         
-        // Находим ближайшую карточку к центру экрана
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            
-            // Проверяем, видна ли карточка на экране
-            if (rect.top < viewportHeight && rect.bottom > 0) {
-                const cardCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(viewportCenter - cardCenter);
+        let activeCard = null;
+        
+        function updateActiveCard() {
+            try {
+                const cards = document.querySelectorAll('.hookah-card');
+                const viewportHeight = window.innerHeight;
+                const viewportCenter = viewportHeight / 2;
                 
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestCard = card;
+                let closestCard = null;
+                let closestDistance = Infinity;
+                
+                // Находим ближайшую карточку к центру экрана
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    
+                    // Проверяем, видна ли карточка на экране
+                    if (rect.top < viewportHeight && rect.bottom > 0) {
+                        const cardCenter = rect.top + rect.height / 2;
+                        const distance = Math.abs(viewportCenter - cardCenter);
+                        
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestCard = card;
+                        }
+                    }
+                });
+                
+                // Снимаем эффект со всех
+                document.querySelectorAll('.card-bg.hover-active').forEach(bg => {
+                    bg.classList.remove('hover-active');
+                });
+                
+                // Добавляем эффект центральной карточке (только если карточка в зоне 50%)
+                if (closestCard && closestDistance < viewportHeight * 0.5) {
+                    const cardBg = closestCard.querySelector('.card-bg');
+                    const cardStats = closestCard.querySelector('.card-stats');
+                    if (cardBg) {
+                        cardBg.classList.add('hover-active');
+                    }
+                    if (cardStats) {
+                        cardStats.classList.add('hover-active');
+                    }
                 }
-            }
-        });
-        
-        // Снимаем эффект со всех
-        document.querySelectorAll('.card-bg.hover-active').forEach(bg => {
-            bg.classList.remove('hover-active');
-        });
-        
-        // Добавляем эффект центральной карточке (только если карточка в зоне 50%)
-        if (closestCard && closestDistance < viewportHeight * 0.5) {
-            const cardBg = closestCard.querySelector('.card-bg');
-            const cardStats = closestCard.querySelector('.card-stats');
-            if (cardBg) {
-                cardBg.classList.add('hover-active');
-            }
-            if (cardStats) {
-                cardStats.classList.add('hover-active');
+            } catch (e) {
+                console.error('Ошибка в updateActiveCard:', e);
             }
         }
-    }
-    
-    // Запускаем при скролле (оптимизировано с throttle)
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateActiveCard();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }, { passive: true });
-    
-    // Проверяем при загрузке и ресайзе
-    updateActiveCard();
-    window.addEventListener('resize', () => {
+        
+        // Запускаем при скролле (оптимизировано с throttle)
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateActiveCard();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+        
+        // Проверяем при загрузке и ресайзе
         updateActiveCard();
-    });
+        window.addEventListener('resize', () => {
+            updateActiveCard();
+        });
+        
+        console.log('Эффект скролла для мобильных включён');
+    } catch (e) {
+        console.error('Ошибка в initScrollEffect:', e);
+    }
 }
 
 // Параллакс эффект при движении мыши (убран, чтобы не мешать hover)
