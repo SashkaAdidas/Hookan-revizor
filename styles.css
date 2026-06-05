@@ -430,17 +430,22 @@ body {
         transition: transform 0.3s ease-out;
     }
     
-    /* Эффект hover для центральной карточки при скролле */
+    /* 🐢 Медленное приближение картинки в мобильном режиме */
     .card-bg.hover-active {
-        transform: scale(1.5) !important;
-        opacity: 0.7 !important;
-    }
-
-    .card-stats.hover-active {
-        opacity: 1 !important;
-        transform: translateX(0) !important;
+        /* Убрали !important — теперь анимация управляется извне */
+        animation: slowZoomIn 4s ease-out forwards;
     }
 }
+    @keyframes slowZoomIn {
+        0% {
+            transform: scale(1);
+            opacity: 0.4;
+        }
+        100% {
+            transform: scale(1.15); /* медленное приближение */
+            opacity: 0.65;
+        }
+    }
 
 /* Отключаем на десктопе */
 @media (min-width: 769px) {
