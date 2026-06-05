@@ -348,14 +348,19 @@ function initScrollEffect() {
         let closestCard = null;
         let closestDistance = Infinity;
         
+        // Находим ближайшую карточку к центру экрана
         cards.forEach(card => {
             const rect = card.getBoundingClientRect();
-            const cardCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(viewportCenter - cardCenter);
             
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestCard = card;
+            // Проверяем, видна ли карточка на экране
+            if (rect.top < viewportHeight && rect.bottom > 0) {
+                const cardCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(viewportCenter - cardCenter);
+                
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestCard = card;
+                }
             }
         });
         
@@ -364,19 +369,20 @@ function initScrollEffect() {
             bg.classList.remove('hover-active');
         });
         
-        // Добавляем эффект центральной карточке
-        if (closestCard && closestCard !== activeCard && closestDistance < viewportHeight / 2) {
-            activeCard = closestCard;
-            const cardBg = activeCard.querySelector('.card-bg');
+        // Добавляем эффект центральной карточке (только если карточка в зоне 50%)
+        if (closestCard && closestDistance < viewportHeight * 0.5) {
+            const cardBg = closestCard.querySelector('.card-bg');
+            const cardStats = closestCard.querySelector('.card-stats');
             if (cardBg) {
                 cardBg.classList.add('hover-active');
             }
-        } else if (closestDistance >= viewportHeight / 2) {
-            activeCard = null;
+            if (cardStats) {
+                cardStats.classList.add('hover-active');
+            }
         }
     }
     
-    // Запускаем при скролле
+    // Запускаем при скролле (оптимизировано с throttle)
     let ticking = false;
     window.addEventListener('scroll', () => {
         if (!ticking) {
@@ -386,11 +392,13 @@ function initScrollEffect() {
             });
             ticking = true;
         }
-    });
+    }, { passive: true });
     
     // Проверяем при загрузке и ресайзе
     updateActiveCard();
-    window.addEventListener('resize', updateActiveCard);
+    window.addEventListener('resize', () => {
+        updateActiveCard();
+    });
 }
 
 // Параллакс эффект при движении мыши (убран, чтобы не мешать hover)

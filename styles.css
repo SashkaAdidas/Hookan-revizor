@@ -421,11 +421,11 @@ body {
     .card-bg {
         transition: transform 0.4s ease-out;
     }
-    
+
     .card-overlay {
         transition: opacity 0.4s ease;
     }
-    
+
     .hookah-card {
         transition: transform 0.3s ease-out;
     }
