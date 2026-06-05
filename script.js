@@ -783,7 +783,26 @@ function filterByRating(minRating) {
 }
 
 // Запуск при загрузке страницы
-document.addEventListener('DOMContentLoaded', initGrid);
+document.addEventListener('DOMContentLoaded', () => {
+    // Сброс кэша при каждой загрузке
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(reg => reg.unregister());
+        });
+    }
+    
+    // Очистка localStorage при необходимости
+    const lastVersion = localStorage.getItem('appVersion');
+    const currentVersion = '3';
+    
+    if (lastVersion !== currentVersion) {
+        localStorage.removeItem('hookahLounges');
+        localStorage.setItem('appVersion', currentVersion);
+        console.log('🔄 Кэш обновлён: версия', currentVersion);
+    }
+    
+    initGrid();
+});
 
 // Экспорт функций для использования в консоли
 window.hookahLounges = hookahLounges;
