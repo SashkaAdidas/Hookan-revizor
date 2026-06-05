@@ -431,35 +431,28 @@ body {
     }
     
     /* Эффект hover для центральной карточки при скролле */
-    .hookah-card .card-bg.hover-active {
-        transform: scale(1.5);
-        opacity: 0.7;
+    .card-bg.hover-active {
+        transform: scale(1.5) !important;
+        opacity: 0.7 !important;
     }
 
-    .hookah-card .card-stats.hover-active {
-        opacity: 1;
-        transform: translateX(0);
+    .card-stats.hover-active {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
     }
 }
 
 /* Отключаем на десктопе */
 @media (min-width: 769px) {
-    .hookah-card .card-bg.hover-active {
+    .card-bg.hover-active {
         transform: none !important;
+        opacity: 0.4 !important;
     }
 
-    .hookah-card .card-stats.hover-active {
-        opacity: 0;
-        transform: translateX(-20px);
+    .card-stats.hover-active {
+        opacity: 0 !important;
+        transform: translateX(-20px) !important;
     }
 }
-
-    .card-overlay {
-        transition: none;
-    }
-
-    .hookah-card {
-        transition: transform 0.3s ease-out;
-    }
 
 

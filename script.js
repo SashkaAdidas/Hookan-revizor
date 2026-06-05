@@ -1,3 +1,14 @@
+// Загрузка отзывов для кальянной из Supabase
+async function loadReviewsForLounge(loungeId) {
+    try {
+        const reviews = await supabase.from('reviews').select('*').eq('lounge_id', loungeId);
+        return reviews.data;
+    } catch (error) {
+        console.error('Ошибка загрузки отзывов:', error);
+        return [];
+    }
+}
+
 // Загрузка данных о кальянных
 function loadHookahLounges() {
     // Сброс localStorage (удали эту строку после первой загрузки)
@@ -319,16 +330,51 @@ function openScheduleModal(loungeName, schedule) {
 }
 
 // Инициализация сетки
-function initGrid() {
+async function initGrid() {
     const grid = document.getElementById('hookahGrid');
+    if (!grid) {
+        console.error('Grid элемент не найден!');
+        return;
+    }
     
-    hookahLounges.forEach(lounge => {
-        const card = createCard(lounge);
-        grid.appendChild(card);
-    });
+    console.log('Инициализация сетки...');
+    console.log('Количество кальянных:', hookahLounges.length);
+    
+    // Очищаем сетку
+    grid.innerHTML = '';
+    
+    // Создаём карточки
+    for (const lounge of hookahLounges) {
+        try {
+            // Загружаем отзывы для этой кальянной
+            let reviews = [];
+            if (typeof supabase !== 'undefined' && supabase.getReviews) {
+                reviews = await loadReviewsForLounge(lounge.id);
+                console.log(`Отзывов для ${lounge.name}:`, reviews.length);
+                
+                // Считаем рейтинг из отзывов
+                if (reviews.length > 0) {
+                    const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+                    lounge.rating = totalRating / reviews.length;
+                    lounge.reviews = reviews.length;
+                }
+            } else {
+                console.log('Supabase не подключён, используем базовые данные');
+            }
+            
+            const card = createCard(lounge);
+            grid.appendChild(card);
+        } catch (error) {
+            console.error(`Ошибка создания карточки ${lounge.name}:`, error);
+        }
+    }
+    
+    console.log('✅ Карточки загружены:', grid.children.length);
     
     // Включаем эффект скролла для мобильных
-    initScrollEffect();
+    setTimeout(() => {
+        initScrollEffect();
+    }, 100);
 }
 
 // Эффект hover для карточки в центре экрана при скролле
@@ -337,8 +383,21 @@ function initScrollEffect() {
         // Проверяем, мобильное устройство
         const isMobile = window.innerWidth <= 768;
         
+        console.log('initScrollEffect вызван, isMobile:', isMobile);
+        
+        // Очищаем старые слушатели
+        window.removeEventListener('scroll', handleScrollThrottled);
+        window.removeEventListener('resize', handleResizeThrottled);
+        
         if (!isMobile) {
             console.log('Не мобильное устройство, эффект отключён');
+            // Снимаем эффект со всех карточек
+            document.querySelectorAll('.card-bg.hover-active').forEach(bg => {
+                bg.classList.remove('hover-active');
+            });
+            document.querySelectorAll('.card-stats.hover-active').forEach(stats => {
+                stats.classList.remove('hover-active');
+            });
             return;
         }
         
@@ -373,6 +432,9 @@ function initScrollEffect() {
                 document.querySelectorAll('.card-bg.hover-active').forEach(bg => {
                     bg.classList.remove('hover-active');
                 });
+                document.querySelectorAll('.card-stats.hover-active').forEach(stats => {
+                    stats.classList.remove('hover-active');
+                });
                 
                 // Добавляем эффект центральной карточке (только если карточка в зоне 50%)
                 if (closestCard && closestDistance < viewportHeight * 0.5) {
@@ -390,9 +452,11 @@ function initScrollEffect() {
             }
         }
         
-        // Запускаем при скролле (оптимизировано с throttle)
+        // Throttle функция
         let ticking = false;
-        window.addEventListener('scroll', () => {
+        let resizeTicking = false;
+        
+        function handleScrollThrottled() {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     updateActiveCard();
@@ -400,13 +464,24 @@ function initScrollEffect() {
                 });
                 ticking = true;
             }
-        }, { passive: true });
+        }
         
-        // Проверяем при загрузке и ресайзе
+        function handleResizeThrottled() {
+            if (!resizeTicking) {
+                window.requestAnimationFrame(() => {
+                    initScrollEffect();
+                    resizeTicking = false;
+                });
+                resizeTicking = true;
+            }
+        }
+        
+        // Запускаем при скролле (оптимизировано с throttle)
+        window.addEventListener('scroll', handleScrollThrottled, { passive: true });
+        window.addEventListener('resize', handleResizeThrottled);
+        
+        // Проверяем при загрузке
         updateActiveCard();
-        window.addEventListener('resize', () => {
-            updateActiveCard();
-        });
         
         console.log('Эффект скролла для мобильных включён');
     } catch (e) {
@@ -429,11 +504,39 @@ function initScrollEffect() {
 // });
 
 // Открыть меню для добавления отзыва (клик по рейтингу)
-function openReviewMenu(loungeId) {
+async function openReviewMenu(loungeId) {
     console.log('Открыть меню для ID:', loungeId);
     
     // Закрыть открытые меню
     document.querySelectorAll('.review-menu').forEach(menu => menu.remove());
+    
+    // Загружаем отзывы из Supabase
+    const reviews = await loadReviewsForLounge(loungeId);
+    const lounge = hookahLounges.find(l => l.id === loungeId);
+    
+    // Считаем рейтинг из отзывов
+    let averageRating = lounge.rating;
+    if (reviews.length > 0) {
+        const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+        averageRating = totalRating / reviews.length;
+    }
+    
+    // Формируем список отзывов
+    const reviewsListHTML = reviews.length > 0 
+        ? reviews.slice(0, 10).map((review, index) => {
+            const date = new Date(review.created_at).toLocaleDateString('ru-RU');
+            const stars = '⭐'.repeat(review.rating);
+            return `
+                <div class="review-item ${index === reviews.length - 1 ? '' : 'review-border'}">
+                    <div class="review-header">
+                        <span class="review-stars">${stars}</span>
+                        <span class="review-date">${date}</span>
+                    </div>
+                    ${review.text ? `<p class="review-text-display">${review.text}</p>` : ''}
+                </div>
+            `;
+        }).join('')
+        : '<p class="no-reviews">Пока нет отзывов. Будьте первым!</p>';
     
     const menu = document.createElement('div');
     menu.className = 'review-menu active';
@@ -441,15 +544,34 @@ function openReviewMenu(loungeId) {
         <div class="review-menu-content">
             <span class="close-menu">&times;</span>
             <h3>Оставить оценку</h3>
-            <div class="stars-select" data-rating="0">
-                <span data-value="1">⭐</span>
-                <span data-value="2">⭐</span>
-                <span data-value="3">⭐</span>
-                <span data-value="4">⭐</span>
-                <span data-value="5">⭐</span>
+            <p style="color: #feca57; text-align: center; margin-bottom: 10px; font-size: 1.1rem;">
+                Текущий рейтинг: ${averageRating.toFixed(1)} ⭐
+            </p>
+            <p style="color: rgba(255,255,255,0.7); text-align: center; margin-bottom: 15px; font-size: 0.9rem;">
+                Отзывов: ${reviews.length}
+            </p>
+            
+            <div class="reviews-section">
+                <h4 style="color: #fff; margin-bottom: 10px;">Отзывы:</h4>
+                <div class="reviews-list">
+                    ${reviewsListHTML}
+                </div>
             </div>
-            <textarea class="review-text" placeholder="Напишите ваш отзыв..." rows="4"></textarea>
-            <button class="submit-btn">Отправить</button>
+            
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+            
+            <div class="add-review-section">
+                <h4 style="color: #fff; margin-bottom: 10px;">Ваш отзыв:</h4>
+                <div class="stars-select" data-rating="0">
+                    <span data-value="1">⭐</span>
+                    <span data-value="2">⭐</span>
+                    <span data-value="3">⭐</span>
+                    <span data-value="4">⭐</span>
+                    <span data-value="5">⭐</span>
+                </div>
+                <textarea class="review-text-input" placeholder="Напишите ваш отзыв..." rows="3"></textarea>
+                <button class="submit-btn">Отправить</button>
+            </div>
         </div>
     `;
     
@@ -476,33 +598,24 @@ function openReviewMenu(loungeId) {
         if (e.target === menu) menu.remove();
     });
     
-    menu.querySelector('.submit-btn').addEventListener('click', () => {
+    menu.querySelector('.submit-btn').addEventListener('click', async () => {
         if (selectedRating === 0) {
             alert('Пожалуйста, поставьте оценку!');
             return;
         }
         
-        const lounge = hookahLounges.find(l => l.id === loungeId);
-        const reviewText = menu.querySelector('.review-text').value.trim();
+        const reviewText = menu.querySelector('.review-text-input').value.trim();
         
-        if (lounge) {
-            // Добавляем отзыв
-            if (!lounge.reviewsList) lounge.reviewsList = [];
-            lounge.reviewsList.push({
-                rating: selectedRating,
-                text: reviewText,
-                date: new Date().toISOString()
-            });
-            
-            // Пересчитываем средний рейтинг
-            const totalRating = lounge.reviewsList.reduce((sum, r) => sum + r.rating, 0);
-            lounge.rating = totalRating / lounge.reviewsList.length;
-            lounge.reviews = lounge.reviewsList.length;
-            
-            saveHookahLounges();
-            initGrid();
+        // Сохраняем в Supabase
+        const result = await supabase.addReview(loungeId, selectedRating, reviewText);
+        
+        if (result) {
             menu.remove();
             alert('Спасибо за ваш отзыв!');
+            // Перезагружаем карточки
+            initGrid();
+        } else {
+            alert('Ошибка сохранения отзыва. Попробуйте позже.');
         }
     });
     
@@ -767,6 +880,119 @@ style.textContent = `
             min-width: 44px;
         }
     }
+    
+    /* Стили для списка отзывов */
+    .reviews-section {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    
+    .reviews-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .review-item {
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .review-border {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        white-space: nowrap;
+    }
+    
+    .review-stars {
+        font-size: 1rem;
+        white-space: nowrap;
+    }
+    
+    .review-date {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+        white-space: nowrap;
+    }
+    
+    .review-text-display {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.4;
+        margin-top: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .no-reviews {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-style: italic;
+        padding: 20px;
+        white-space: nowrap;
+    }
+    
+    .review-text-input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.9rem;
+        resize: vertical;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
+    
+    .review-text-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .add-review-section {
+        margin-top: 10px;
+    }
+    
+    /* Скроллбар для списка отзывов */
+    .reviews-section::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .reviews-section::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+    }
+    
+    .reviews-section::-webkit-scrollbar-thumb {
+        background: rgba(255, 107, 107, 0.5);
+        border-radius: 3px;
+    }
+    
+    /* Рейтинг не переносится */
+    .rating-badge {
+        white-space: nowrap;
+    }
+    
+    .rating-badge .stars {
+        white-space: nowrap;
+    }
+    
+    .rating-badge .reviews-count {
+        white-space: nowrap;
+    }
 `;
 document.head.appendChild(style);
 
@@ -783,7 +1009,7 @@ function filterByRating(minRating) {
 }
 
 // Запуск при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Сброс кэша при каждой загрузке
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(registrations => {
@@ -793,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Очистка localStorage при необходимости
     const lastVersion = localStorage.getItem('appVersion');
-    const currentVersion = '3';
+    const currentVersion = '4';
     
     if (lastVersion !== currentVersion) {
         localStorage.removeItem('hookahLounges');
@@ -801,6 +1027,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('🔄 Кэш обновлён: версия', currentVersion);
     }
     
+    console.log('🔥 Сайт кальянных загружен!');
     initGrid();
 });
 
