@@ -37,7 +37,7 @@ export function createCard(lounge) {
             ${statsHTML}
         </div>
         <div class="card-content">
-            <div class="card-title">${lounge.name}</div>
+            <div class="card-title" title="${lounge.name}">${lounge.name}</div>
             <div class="card-location">📍 ${lounge.location}</div>
             <div class="rating-badge review-trigger" data-id="${lounge.id}">
                 ${starsHTML}

@@ -109,10 +109,7 @@
 }
 
 .rating-badge.review-trigger::after {
-  content: " 🖱️";
-  /* font-size: 0.8rem; */
-  opacity: 0.7;
-  margin-left: 8px;
+  content: none;
 }
 
 .info-tag {
