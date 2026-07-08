@@ -24,7 +24,7 @@ export function createCard(lounge) {
 
   const reviewsCountHTML = lounge.reviews > 0
     ? `<span class="reviews-count" style="font-size: 0.8rem; margin-left: 8px;">(${lounge.reviews})</span>`
-    : '';
+    : `<span class="reviews-count no-reviews-text">нет отзывов</span>`;
 
   card.innerHTML = `
         <div class="card-bg photo-bg" style="${bgStyle}"></div>
@@ -46,7 +46,7 @@ export function createCard(lounge) {
         </div>
     `;
 
-  // ✅ card создан — теперь можно искать .card-location
+  //  card создан — теперь можно искать .card-location
   const cardLocation = card.querySelector(".card-location");
   if (lounge.location) {
     cardLocation.addEventListener("click", (e) => {
@@ -60,7 +60,7 @@ export function createCard(lounge) {
   if (lounge.image) {
     const img = new Image();
     img.src = lounge.image;
-    img.onload = () => console.log(`✅ Фото загрузилось: ${lounge.image}`);
+    img.onload = () => console.log(` Фото загрузилось: ${lounge.image}`);
     img.onerror = () =>
       console.error(`❌ Фото НЕ загрузилось: ${lounge.image}`);
   }

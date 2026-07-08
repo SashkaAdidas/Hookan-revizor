@@ -1,469 +1,483 @@
 /* ===== Стили для меню отзывов ===== */
 .review-menu {
-    position: fixed;
-    z-index: 100000;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
-    width: 100%;
-    height: 100%;
-    display: none;
+  position: fixed;
+  z-index: 100000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  display: none;
 }
 
 .review-menu.active {
-    display: flex !important;
+  display: flex !important;
 }
 
 .review-menu-content {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    padding: 30px;
-    border-radius: 20px;
-    width: 350px;
-    position: relative;
-    box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: auto;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  position: relative;
+  box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: auto;
 }
 
 .close-menu {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #fff;
-    line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+  line-height: 1;
 }
 
 .review-menu-content h3 {
-    color: #fff;
-    margin-bottom: 20px;
-    text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .stars-select {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
 }
 
 .stars-select span {
-    font-size: 2.5rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    opacity: 0.3;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.3;
 }
 
 .stars-select span:hover {
-    transform: scale(1.3);
+  transform: scale(1.3);
 }
 
 .review-text {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.9rem;
-    resize: vertical;
-    margin-top: 15px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-top: 15px;
+  box-sizing: border-box;
 }
 
 .review-text::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .submit-btn {
-    width: 100%;
-    padding: 12px;
-    margin-top: 20px;
-    background: linear-gradient(135deg, #ff6b6b, #feca57);
-    border: none;
-    border-radius: 25px;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: transform 0.3s;
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.3s;
 }
 
 .submit-btn:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .rating-badge.review-trigger {
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .rating-badge.review-trigger:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.7);
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.7);
 }
 
 .rating-badge.review-trigger::after {
-    content: ' 🖱️';
-    font-size: 0.8rem;
-    opacity: 0.7;
+  content: " 🖱️";
+  /* font-size: 0.8rem; */
+  opacity: 0.7;
+  margin-left: 8px;
 }
 
 .info-tag {
-    cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
+  cursor: pointer;
+  transition:
+    transform 0.3s,
+    background 0.3s;
 }
 
 .info-tag:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ===== Стили для модалки расписания ===== */
 .schedule-modal {
-    position: fixed;
-    z-index: 100000;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
-    width: 100%;
-    height: 100%;
-    display: none;
+  position: fixed;
+  z-index: 100000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  display: none;
 }
 
 .schedule-modal.active {
-    display: flex !important;
+  display: flex !important;
 }
 
 .schedule-modal-content {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    padding: 30px;
-    border-radius: 20px;
-    width: 400px;
-    position: relative;
-    box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: auto;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 30px;
+  border-radius: 20px;
+  width: 400px;
+  position: relative;
+  box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: auto;
 }
 
 .close-schedule {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #fff;
-    line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+  line-height: 1;
 }
 
 .schedule-modal-content h3 {
-    color: #fff;
-    margin-bottom: 10px;
-    text-align: center;
+  color: #fff;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .schedule-title {
-    color: #feca57;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
+  color: #feca57;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
 }
 
 .schedule-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .schedule-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .schedule-day {
-    color: #fff;
-    font-weight: 500;
+  color: #fff;
+  font-weight: 500;
 }
 
 .schedule-time {
-    color: #feca57;
-    font-weight: 600;
+  color: #feca57;
+  font-weight: 600;
 }
 
 /* ===== Мобильная адаптация модалок ===== */
 @media (max-width: 768px) {
-    .schedule-modal-content,
-    .review-menu-content {
-        width: 90% !important;
-        max-width: 350px;
-        padding: 20px;
-        margin: 10px;
-    }
-    
-    .schedule-modal-content h3,
-    .review-menu-content h3 {
-        font-size: 1.2rem;
-    }
-    
-    .schedule-title {
-        font-size: 1.1rem;
-    }
-    
-    .schedule-row {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-    }
-    
-    .close-menu,
-    .close-schedule {
-        font-size: 1.5rem;
-        top: 8px;
-        right: 12px;
-    }
-    
-    .stars-select span {
-        font-size: 2rem;
-    }
-    
-    .review-text {
-        font-size: 0.85rem;
-        padding: 10px;
-    }
-    
-    .submit-btn {
-        font-size: 0.95rem;
-        padding: 10px;
-    }
+  .schedule-modal-content,
+  .review-menu-content {
+    width: 90% !important;
+    max-width: 350px;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .schedule-modal-content h3,
+  .review-menu-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .schedule-title {
+    font-size: 1.1rem;
+  }
+
+  .schedule-row {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .close-menu,
+  .close-schedule {
+    font-size: 1.5rem;
+    top: 8px;
+    right: 12px;
+  }
+
+  .stars-select span {
+    font-size: 2rem;
+  }
+
+  .review-text {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+
+  .submit-btn {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
 }
 
 /* Улучшаем нажатие на тач-устройствах */
 @media (hover: none) and (pointer: coarse) {
-    .info-tag,
-    .rating-badge.review-trigger,
-    .stars-select span,
-    .submit-btn {
-        min-height: 44px;
-        min-width: 44px;
-    }
+  .info-tag,
+  .rating-badge.review-trigger,
+  .stars-select span,
+  .submit-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 /* ===== Стили для списка отзывов ===== */
 .reviews-section {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
 }
 
 .reviews-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .review-item {
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .review-border {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-    white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  white-space: nowrap;
 }
 
 .review-stars {
-    font-size: 1rem;
-    white-space: nowrap;
+  font-size: 1rem;
+  white-space: nowrap;
 }
 
 .review-date {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    white-space: nowrap;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
 }
 
 .review-text-display {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.4;
-    margin-top: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
 }
 
 .no-reviews {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-    padding: 20px;
-    white-space: nowrap;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  padding: 20px;
+  white-space: nowrap;
 }
 
 .review-text-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.9rem;
-    resize: vertical;
-    margin-top: 10px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-top: 10px;
+  box-sizing: border-box;
 }
 
 .review-text-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .add-review-section {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 /* Скроллбар для списка отзывов */
 .reviews-section::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .reviews-section::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
 }
 
 .reviews-section::-webkit-scrollbar-thumb {
-    background: rgba(255, 107, 107, 0.5);
-    border-radius: 3px;
+  background: rgba(255, 107, 107, 0.5);
+  border-radius: 3px;
 }
 
 /* Рейтинг не переносится */
 .rating-badge {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .rating-badge .stars {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .rating-badge .reviews-count {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* ===== Модалка с картой ===== */
 .location-modal {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 999999 !important;
-    background: rgba(0, 0, 0, 0.8);
-    width: 100vw !important;
-    height: 100vh !important;
-    display: none;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999999 !important;
+  background: rgba(0, 0, 0, 0.8);
+  width: 100vw !important;
+  height: 100vh !important;
+  display: none;
 }
 
 .location-modal.active {
-    display: flex !important;
+  display: flex !important;
 }
 
 .location-modal-content {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    padding: 30px;
-    border-radius: 20px;
-    width: 350px;
-    position: relative;
-    box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: auto;
-    text-align: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  position: relative;
+  box-shadow: 0 20px 80px rgba(255, 107, 107, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: auto;
+  text-align: center;
 }
 
 .close-map {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #fff;
-    line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+  line-height: 1;
 }
 
 .location-modal-content h3 {
-    color: #fff;
-    margin-bottom: 15px;
-    text-align: center;
+  color: #fff;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .location-address {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 12px;
-    border-radius: 10px;
-    margin: 20px 0;
-    color: #fff;
-    font-weight: 500;
-    word-break: break-word;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+  margin: 20px 0;
+  color: #fff;
+  font-weight: 500;
+  word-break: break-word;
 }
 
 .open-map-btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin: 15px auto;
-    background: linear-gradient(135deg, #ff6b6b, #feca57);
-    border: none;
-    border-radius: 30px;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 15px auto;
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .open-map-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
 }
 
 .map-hint {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
-    margin-top: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin-top: 10px;
 }
 
 /* Мобильная адаптация карты */
 @media (max-width: 768px) {
-    .location-modal-content {
-        width: 90% !important;
-        max-width: 350px;
-        padding: 20px;
-    }
-    
-    .location-address {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-    
-    .open-map-btn {
-        font-size: 1rem;
-        padding: 12px;
-    }
+  .location-modal-content {
+    width: 90% !important;
+    max-width: 350px;
+    padding: 20px;
+  }
+
+  .location-address {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .open-map-btn {
+    font-size: 1rem;
+    padding: 12px;
+  }
 }
