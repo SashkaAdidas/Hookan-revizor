@@ -21,7 +21,7 @@ async function loadReviewsForLounge(loungeId) {
   
   try {
     const reviews = await window.supabase.getReviews(loungeId);
-    console.log('📦 Загружено отзывов для ID', loungeId, ':', reviews.length);
+    console.log(' Загружено отзывов для ID', loungeId, ':', reviews.length);
     return reviews;
   } catch (error) {
     console.error("Ошибка загрузки отзывов:", error);
@@ -87,7 +87,7 @@ async function initGrid() {
     }
   }
 
-  console.log("✅ Карточки загружены:", grid.children.length);
+  console.log(" Карточки загружены:", grid.children.length);
 
   // Включаем эффект скролла для мобильных
   setTimeout(() => {
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("🔄 Кэш обновлён: версия", currentVersion);
   }
 
-  console.log("🔥 Сайт кальянных загружен!");
+  console.log(" Сайт кальянных загружен!");
   initGrid();
 });
 
@@ -135,6 +135,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 window.filterByRating = filterByRating;
 
 // Запуск при загрузке
-console.log("🔥 Сайт кальянных загружен!");
+console.log(" Сайт кальянных загружен!");
 console.log("Использовать filterByRating(4.5) для фильтрации по рейтингу");
 console.log("Данные доступны в window.hookahLounges после загрузки");
