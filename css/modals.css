@@ -370,14 +370,6 @@
   white-space: nowrap;
 }
 
-.rating-badge .stars {
-  white-space: nowrap;
-}
-
-.rating-badge .reviews-count {
-  white-space: nowrap;
-}
-
 /* ===== Модалка с картой ===== */
 .location-modal {
   position: fixed !important;

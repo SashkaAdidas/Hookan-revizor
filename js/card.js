@@ -19,12 +19,12 @@ export function createCard(lounge) {
     .join("");
 
   const starsHTML = lounge.reviews > 0
-    ? `${lounge.rating.toFixed(1)} <span class="stars">${generateStars(lounge.rating)}</span>`
+    ? `${lounge.rating.toFixed(1)} ${generateStars(lounge.rating)}`
     : '';
 
   const reviewsCountHTML = lounge.reviews > 0
-    ? `<span class="reviews-count" style="font-size: 0.8rem; margin-left: 8px;">(${lounge.reviews})</span>`
-    : `<span class="reviews-count no-reviews-text">нет отзывов</span>`;
+    ? ` (${lounge.reviews})`
+    : `<span class="no-reviews-badge">НЕТ ОТЗЫВОВ</span>`;
 
   card.innerHTML = `
         <div class="card-bg photo-bg" style="${bgStyle}"></div>
