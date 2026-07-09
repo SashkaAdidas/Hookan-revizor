@@ -97,6 +97,7 @@
 }
 
 .rating-badge.review-trigger {
+    border: 1px solid currentColor;
   cursor: pointer;
   transition:
     transform 0.3s,
@@ -252,7 +253,7 @@
   .rating-badge.review-trigger,
   .stars-select span,
   .submit-btn {
-    min-height: 44px;
+    min-height: 30px;
     min-width: 44px;
   }
 }

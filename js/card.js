@@ -1,4 +1,4 @@
-import { generateStars } from './utils.js';
+import { generateStars } from "./utils.js";
 
 // Создание карточки кальянной
 export function createCard(lounge) {
@@ -18,13 +18,15 @@ export function createCard(lounge) {
     .map(([key, value]) => `<div class="stat-item">${key}: ${value}</div>`)
     .join("");
 
-  const starsHTML = lounge.reviews > 0
-    ? `${lounge.rating.toFixed(1)} ${generateStars(lounge.rating)}`
-    : '';
+  const starsHTML =
+    lounge.reviews > 0
+      ? `<span class="rating-value">${lounge.rating.toFixed(1)}</span> <span class="stars">${generateStars(lounge.rating)}</span>`
+      : "";
 
-  const reviewsCountHTML = lounge.reviews > 0
-    ? ` (${lounge.reviews})`
-    : `<span class="no-reviews-badge">НЕТ ОТЗЫВОВ</span>`;
+  const reviewsCountHTML =
+    lounge.reviews > 0
+      ? `<span class="reviews-count">(${lounge.reviews})</span>`
+      : `<span class="no-reviews-text">нет отзывов</span>`;
 
   card.innerHTML = `
         <div class="card-bg photo-bg" style="${bgStyle}"></div>
@@ -39,10 +41,10 @@ export function createCard(lounge) {
         <div class="card-content">
             <div class="card-title" title="${lounge.name}">${lounge.name}</div>
             <div class="card-location">📍 ${lounge.location}</div>
-            <div class="rating-badge review-trigger" data-id="${lounge.id}">
+            <button class="rating-badge review-trigger" data-id="${lounge.id}">
                 ${starsHTML}
                 ${reviewsCountHTML}
-            </div>
+            </button>
         </div>
     `;
 
