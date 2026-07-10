@@ -39,8 +39,8 @@ export function createCard(lounge) {
             ${statsHTML}
         </div>
         <div class="card-content">
-            <div class="card-title" title="${lounge.name}">${lounge.name}</div>
-            <div class="card-location">📍 ${lounge.location}</div>
+             <div class="card-title" title="${lounge.name}">${lounge.name}</div>
+            <div class="card-location" data-location="${lounge.location}">📍 ${lounge.location}</div>
             <button class="rating-badge review-trigger" data-id="${lounge.id}">
                 ${starsHTML}
                 ${reviewsCountHTML}
@@ -48,15 +48,27 @@ export function createCard(lounge) {
         </div>
     `;
 
-  //  card создан — теперь можно искать .card-location
+  // Обработчики для адреса
   const cardLocation = card.querySelector(".card-location");
   if (lounge.location) {
+    // Клик — открываем карту
     cardLocation.addEventListener("click", (e) => {
       e.stopPropagation();
-      console.log("Клик по адресу:", lounge.location);
       window.openLocationMap(lounge.location);
     });
+
+    // Ховер — меняем текст
+    cardLocation.addEventListener("mouseenter", () => {
+      cardLocation.textContent = "Открыть карту";
+    });
+    
+    // Убираем ховер — возвращаем адрес
+    cardLocation.addEventListener("mouseleave", () => {
+      cardLocation.textContent = `📍 ${lounge.location}`;
+    });
   }
+
+  // Проверка загрузки фото
 
   // Проверка загрузки фото
   if (lounge.image) {

@@ -154,7 +154,7 @@
     "reviews": 267,
     "priceRange": "",
     "tags": ["🌙 Расписание:"],
-    "stats": { "Дизайн": 9.4, "Интерьер": 9.1 },
+    "stats": {},
     "gradient": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
     "image": "images/photos/KitchLounge.webp",
     "schedule": {
